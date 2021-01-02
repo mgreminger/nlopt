@@ -1,5 +1,6 @@
 import re
 from setuptools import setup, Extension
+from setuptools.command.build_ext import build_ext
 import numpy as np
 
 with open("CMakeLists.txt") as f:
@@ -22,11 +23,6 @@ setup(
     name='nlopt',
     version=version,
     packages=['nlopt'],
-    package_data = {
-        'nlopt': [
-            'nlopt.py',
-        ],
-    },
     install_requires=["numpy >=1.14"],
     ext_modules=[Extension("nlopt._nlopt", ['src/algs/direct/DIRect.c',
                                             'src/algs/direct/direct_wrap.c',
@@ -84,5 +80,5 @@ setup(
                       './src/algs/slsqp', np.get_include()],
         swig_opts=['-c++', '-interface', '_nlopt', '-outdir', './nlopt'],)],
     zip_safe=False,
-    include_package_data=True,
+    cmdclass={"build_ext": build_ext},
 )

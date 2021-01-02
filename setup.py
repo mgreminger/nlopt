@@ -79,4 +79,5 @@ setup(
                       './src/algs/slsqp', np.get_include()],
         swig_opts=['-c++', '-interface', '_nlopt', '-outdir', './nlopt'],)],
     zip_safe=False,
+    include_package_data=True,
 )

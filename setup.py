@@ -26,6 +26,7 @@ setup(
         'nlopt': [
             'nlopt.py',
         ],
+    },
     install_requires=["numpy >=1.14"],
     ext_modules=[Extension("nlopt._nlopt", ['src/algs/direct/DIRect.c',
                                             'src/algs/direct/direct_wrap.c',

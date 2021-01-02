@@ -1,7 +1,8 @@
+#!/usr/bin/env python
 import re
 from setuptools import setup, Extension
-from setuptools.command.build_py import build_py   
-import numpy as np
+from setuptools.command.build_py import build_py
+from numpy import get_include
 
 with open("CMakeLists.txt") as f:
     content = f.read()
@@ -82,7 +83,7 @@ setup(
                       './src/algs/mlsl', './src/algs/mma', './src/algs/cobyla',
                       './src/algs/newuoa', './src/algs/neldermead', './src/algs/auglag',
                       './src/algs/bobyqa', './src/algs/isres', './src/algs/esch', 
-                      './src/algs/slsqp', np.get_include()],
+                      './src/algs/slsqp', get_include()],
         swig_opts=['-c++', '-interface', '_nlopt', '-outdir', './nlopt'],)],
     zip_safe=False,
     cmdclass={"build_py": build_py_after_build_ext},

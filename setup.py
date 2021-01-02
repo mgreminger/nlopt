@@ -1,6 +1,6 @@
 import re
 from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext
+from setuptools.command.build_ext import build_py   
 import numpy as np
 
 with open("CMakeLists.txt") as f:
@@ -18,6 +18,11 @@ from .nlopt import *
 
 __version__ = '{version}'
 """.strip() + "\n")
+
+class build_py_after_build_ext(build_py):
+    def run(self):
+        self.run_command("build_ext")
+        return super().run()
 
 setup(
     name='nlopt',
@@ -80,5 +85,5 @@ setup(
                       './src/algs/slsqp', np.get_include()],
         swig_opts=['-c++', '-interface', '_nlopt', '-outdir', './nlopt'],)],
     zip_safe=False,
-    cmdclass={"build_ext": build_ext},
+    cmdclass={"build_py": build_py_after_build_ext},
 )

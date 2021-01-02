@@ -28,6 +28,5 @@ build/
 # setup.py build
 nlopt.egg*
 src/swig/nlopt_wrap.cpp
-nlopt/nlopt.py
 dist/
 src/swig/nlopt-python_wrap.cpp

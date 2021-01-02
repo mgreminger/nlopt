@@ -1,6 +1,6 @@
 import re
 from setuptools import setup, Extension
-from setuptools.command.build_ext import build_py   
+from setuptools.command.build_py import build_py   
 import numpy as np
 
 with open("CMakeLists.txt") as f:

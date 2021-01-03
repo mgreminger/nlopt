@@ -30,6 +30,8 @@ def create_pkg_directory():
     __version__ = '{version}'
     """.strip() + "\n")
 
+    return version
+
 def configure_with_cmake():
     # There are some header files that are created by cmake
     # cmake is used to configure only, actual compile will be handled
@@ -45,9 +47,9 @@ def configure_with_cmake():
         '.'
     ]
 
-    check_call(cmd=cmd, env=os.environ)
+    check_call(cmd, env=os.environ)
 
-create_pkg_directory()
+version = create_pkg_directory()
 configure_with_cmake()
 
 setup(

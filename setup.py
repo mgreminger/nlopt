@@ -25,15 +25,16 @@ def create_pkg_directory():
     pkg_folder.mkdir(exist_ok=True)
     with (pkg_folder / '__init__.py').open('w') as f:
         f.write(f"""
-    from .nlopt import *
+from .nlopt import *
 
-    __version__ = '{version}'
+__version__ = '{version}'
     """.strip() + "\n")
 
     return version
 
 def configure_with_cmake():
-    # There are some header files that are created by cmake
+    # There are 2 header files that are created by cmake (nlopt_config.h
+    # and nlopt.hpp)
     # cmake is used to configure only, actual compile will be handled
     # by setuptools build_ext
     cmd = [

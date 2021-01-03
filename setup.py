@@ -49,6 +49,12 @@ def configure_with_cmake():
 
     check_call(cmd, env=os.environ)
 
+    # Need to generate nlopt.hpp
+    cmd = ["cmake", "-DAPI_SOURCE_DIR=./src/api",
+           "-P", "./cmake/generate-cpp.cmake"]
+    
+    check_call(cmd, env=os.environ)
+
 version = create_pkg_directory()
 configure_with_cmake()
 

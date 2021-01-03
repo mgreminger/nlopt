@@ -7,11 +7,6 @@ from setuptools import setup, Extension
 from setuptools.command.build_py import build_py
 from numpy import get_include
 
-class build_py_after_build_ext(build_py):
-    def run(self):
-        self.run_command("build_ext")
-        return super().run()
-
 def create_pkg_directory():
     with open("CMakeLists.txt") as f:
         content = f.read()
@@ -56,8 +51,13 @@ def configure_with_cmake():
     
     check_call(cmd, env=os.environ)
 
+class build_py_after_build_ext(build_py):
+    def run(self):
+        configure_with_cmake()
+        self.run_command("build_ext")
+        return super().run()
+
 version = create_pkg_directory()
-configure_with_cmake()
 
 setup(
     name='nlopt',

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import re
+from pathlib import Path
 from setuptools import setup, Extension
 from setuptools.command.build_py import build_py
 from numpy import get_include
@@ -12,8 +13,9 @@ with open("CMakeLists.txt") as f:
         version.append(m.group(1))
     version = ".".join(version)
 
-
-with open("nlopt/__init__.py", 'w') as f:
+pkg_folder = Path('nlopt')
+pkg_folder.mkdir(exist_ok=True)
+with (pkg_folder / '__init__.py').open('w') as f:
     f.write(f"""
 from .nlopt import *
 

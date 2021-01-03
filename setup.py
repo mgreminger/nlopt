@@ -1,31 +1,54 @@
 #!/usr/bin/env python
+import os
 import re
 from pathlib import Path
+from subprocess import check_call
 from setuptools import setup, Extension
 from setuptools.command.build_py import build_py
 from numpy import get_include
-
-with open("CMakeLists.txt") as f:
-    content = f.read()
-    version = []
-    for s in ("MAJOR", "MINOR", "BUGFIX"):
-        m = re.search(f"NLOPT_{s}_VERSION *['\"](.+)['\"]", content)
-        version.append(m.group(1))
-    version = ".".join(version)
-
-pkg_folder = Path('nlopt')
-pkg_folder.mkdir(exist_ok=True)
-with (pkg_folder / '__init__.py').open('w') as f:
-    f.write(f"""
-from .nlopt import *
-
-__version__ = '{version}'
-""".strip() + "\n")
 
 class build_py_after_build_ext(build_py):
     def run(self):
         self.run_command("build_ext")
         return super().run()
+
+def create_pkg_directory():
+    with open("CMakeLists.txt") as f:
+        content = f.read()
+        version = []
+        for s in ("MAJOR", "MINOR", "BUGFIX"):
+            m = re.search(f"NLOPT_{s}_VERSION *['\"](.+)['\"]", content)
+            version.append(m.group(1))
+        version = ".".join(version)
+
+    pkg_folder = Path('nlopt')
+    pkg_folder.mkdir(exist_ok=True)
+    with (pkg_folder / '__init__.py').open('w') as f:
+        f.write(f"""
+    from .nlopt import *
+
+    __version__ = '{version}'
+    """.strip() + "\n")
+
+def configure_with_cmake():
+    # There are some header files that are created by cmake
+    # cmake is used to configure only, actual compile will be handled
+    # by setuptools build_ext
+    cmd = [
+        "cmake",
+        "-LAH",
+        # f"-DCMAKE_LIBRARY_OUTPUT_DIRECTORY={_ed}",
+        # f"-DPYTHON_EXECUTABLE={sys.executable}",
+        "-DNLOPT_GUILE=OFF",
+        "-DNLOPT_MATLAB=OFF",
+        "-DNLOPT_OCTAVE=OFF",
+        '.'
+    ]
+
+    check_call(cmd=cmd, env=os.environ)
+
+create_pkg_directory()
+configure_with_cmake()
 
 setup(
     name='nlopt',

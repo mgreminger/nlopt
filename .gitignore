@@ -30,3 +30,5 @@ nlopt.egg*
 src/swig/nlopt_wrap.cpp
 dist/
 src/swig/nlopt-python_wrap.cpp
+nlopt/__init__.py
+nlopt/nlopt.py
